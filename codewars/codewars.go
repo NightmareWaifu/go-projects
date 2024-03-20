@@ -10,9 +10,12 @@ var split_main = strings.Repeat("-", 10)
 
 func main() {
 	fmt.Println(split_main + "Codewars Start" + split_main)
-	//Points([]string{"1:0", "2:0", "3:0", "4:0", "2:1", "3:1", "4:1", "3:2", "4:2", "4:3"})
+
 	//add function here
-	fmt.Println(EncodeCd(128))
+	//Points([]string{"1:0", "2:0", "3:0", "4:0", "2:1", "3:1", "4:1", "3:2", "4:2", "4:3"})
+	//fmt.Println(EncodeCd(128))
+	//TwoToOne("xyaabbbccccdefww", "xxxxyyyyabklmopq")
+	//SpinWords("Hey fellow warriors")
 	fmt.Println(split_main + "Codewars End" + split_main)
 }
 
@@ -151,4 +154,88 @@ func EncodeCd(n uint8) string {
 	}
 
 	return strings.Join(cd[:], "") //convert cd list to slice before joining
+}
+
+func TwoToOne(s1 string, s2 string) string {
+	var all_letters_str string = "abcdefghijklmnopqrstuvwxyz"
+	var all_letters = strings.Split(all_letters_str, "") //split the letters because im too lazy to type it out
+
+	var letter_flags [26]int
+	for index := range all_letters { //init letter flags cuz im lazy
+		letter_flags[index] = 0
+	}
+
+	//check for chars
+
+	//old
+
+	// for index := range all_letters {
+	// 	for s1_index := range s1 {
+	// 		if string(s1[s1_index]) == all_letters[index] {
+	// 			//works
+	// 			letter_flags[index] = 1
+	// 		}
+	// 	}
+
+	// 	for s2_index := range s2 {
+	// 		if string(s2[s2_index]) == all_letters[index] {
+	// 			letter_flags[index] = 1
+	// 		}
+	// 	}
+	// }
+
+	//new - improvement from seeing other solutions -> instead of 2 for loops you can combine both strings and use 1 for loop instead
+
+	var combined_string string = s1 + s2
+
+	for index := range all_letters {
+		for string_index := range combined_string {
+			if string(combined_string[string_index]) == all_letters[index] {
+				letter_flags[index] = 1
+			}
+		}
+	}
+
+	var longest_string string
+	//creating the string
+	for index := range letter_flags {
+		if letter_flags[index] == 1 {
+			longest_string += all_letters[index]
+		}
+	}
+
+	//fmt.Println(longest_string)
+	return longest_string
+}
+
+func Multiple3And5(number int) int {
+	//6kyu - Multiples of 3 or 5
+
+	var sum int
+
+	for i := 0; i < number; i++ {
+		if i%3 == 0 || i%5 == 0 {
+			sum += i
+		}
+	}
+
+	return sum
+}
+
+func SpinWords(str string) string {
+	//6kyu - Stop gninnipS My sdroW!
+
+	all_words := strings.Split(str, " ")
+	for index := range all_words {
+		if len(all_words[index]) >= 5 {
+			var new_string string
+			var new_string_index int
+			for letter_index := range all_words[index] {
+				new_string_index = len(all_words[index]) - letter_index - 1
+				new_string += string(all_words[index][new_string_index])
+			}
+			all_words[index] = new_string
+		}
+	}
+	return strings.Join(all_words, " ")
 }
