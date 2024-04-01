@@ -16,8 +16,12 @@ func main() {
 	//fmt.Println(EncodeCd(128))
 	//TwoToOne("xyaabbbccccdefww", "xxxxyyyyabklmopq")
 	//SpinWords("Hey fellow warriors")
+	//TwiceAsOld(36, 7)
+	fmt.Println(dots_on_domino_bones(2))
 	fmt.Println(split_main + "Codewars End" + split_main)
 }
+
+//---------------------------------8kyu
 
 func Quadratic(x1, x2 int) [3]int {
 	//8kyu - Quadratic Coefficients Solver
@@ -89,6 +93,71 @@ func Points(games []string) int {
 	return total_points
 }
 
+func EvenOrOdd(number int) string {
+	//8kyu - Even or Odd
+	result := "Odd"
+	is_odd_or_even := number % 2
+
+	if is_odd_or_even == 0 {
+		result = "Even"
+	}
+
+	return result
+}
+
+func TwiceAsOld(dadYearsOld, sonYearsOld int) int {
+	//8kyu - Twice as old
+	for i := 0; i >= 0; i++ {
+		if (dadYearsOld+i) == 2*(sonYearsOld+i) || (dadYearsOld-i) == 2*(sonYearsOld-i) {
+			return i
+		}
+	}
+	return 0
+
+	//smart solution
+	//return int(math.Abs(float64(dadYearsOld - (sonYearsOld * 2))))
+
+	//explanation
+	// at target, a + x = 2(b+x)
+	// : a + x = 2b + 2x
+	// : a - 2b = x
+
+}
+
+func countSheep(num int) string {
+	//8kyu - If you can't sleep, just count sheep!!
+	var result string = ""
+	for i := 1; i <= num; i++ {
+		result += (strconv.Itoa(i) + " sheep...")
+	}
+
+	return result
+}
+
+func ExpressionMatter(a int, b int, c int) int {
+	//8kyu - Expressions Matter
+	largest := a + b + c
+	if largest < a+b*c {
+		largest = a + b*c
+	}
+	if largest < a*b+c {
+		largest = a*b + c
+	}
+	if largest < (a+b)*c {
+		largest = (a + b) * c
+	}
+	if largest < a*(b+c) {
+		largest = a * (b + c)
+	}
+	if largest < a*b*c {
+		largest = a * b * c
+	}
+
+	return largest
+}
+
+//---------------------------------7kyu
+
 func EncodeCd(n uint8) string {
 	//7kyu - Encode data on CD (Compact Disc) surface
 	//8 bit = 128-64-32-16-8-4-2-1 -> where n < 256 [0..255]
@@ -157,6 +226,7 @@ func EncodeCd(n uint8) string {
 }
 
 func TwoToOne(s1 string, s2 string) string {
+	//7kyu - Two to One
 	var all_letters_str string = "abcdefghijklmnopqrstuvwxyz"
 	var all_letters = strings.Split(all_letters_str, "") //split the letters because im too lazy to type it out
 
@@ -207,6 +277,20 @@ func TwoToOne(s1 string, s2 string) string {
 	//fmt.Println(longest_string)
 	return longest_string
 }
+
+func dots_on_domino_bones(n int) int {
+	//7kyu - Dots on Domino's Bones
+	var total_points int = 0
+	for i := 0; i <= n; i++ {
+		for j := i; j <= n; j++ {
+			total_points += j
+			total_points += i
+		}
+	}
+	return total_points
+}
+
+//---------------------------------6kyu
 
 func Multiple3And5(number int) int {
 	//6kyu - Multiples of 3 or 5
