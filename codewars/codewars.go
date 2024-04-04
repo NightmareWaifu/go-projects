@@ -17,7 +17,9 @@ func main() {
 	//TwoToOne("xyaabbbccccdefww", "xxxxyyyyabklmopq")
 	//SpinWords("Hey fellow warriors")
 	//TwiceAsOld(36, 7)
-	fmt.Println(dots_on_domino_bones(2))
+	//fmt.Println(dots_on_domino_bones(2))
+	CreateBox(7, 7)
+
 	fmt.Println(split_main + "Codewars End" + split_main)
 }
 
@@ -288,6 +290,61 @@ func dots_on_domino_bones(n int) int {
 		}
 	}
 	return total_points
+}
+
+func CreateBox(width, length int) [][]int {
+	//7kyu - The 'spiraling' box
+
+	//number of lists = length
+	//length of list = width
+
+	var box [][]int
+	var created_box [][]int
+	//var half int = (length + 1) / 2
+
+	for row := 1; row <= (length+1)/2; row++ {
+		push_list := []int{}
+		for column := 1; column <= (width)/2; column++ { //first half
+			if row < column {
+				push_list = append(push_list, row)
+			} else {
+				push_list = append(push_list, column)
+			}
+		}
+
+		hold_list := push_list
+		if width%2 == 1 {
+			if row > width/2+1 {
+				push_list = append(push_list, width/2+1)
+			} else {
+				push_list = append(push_list, row)
+			}
+		}
+
+		for index := (width / 2) - 1; index >= 0; index-- { //second half
+			push_list = append(push_list, hold_list[index])
+		}
+		box = append(box, push_list)
+	}
+	for i := 0; i < len(box); i++ {
+		created_box = append(created_box, box[i])
+		//fmt.Println(box[i])
+	}
+	//if odd number of rows, add the odd row
+	var num int = 1
+	if length%2 == 1 {
+		fmt.Println("Found is odd")
+		num = 2
+	}
+	for i := len(box) - num; i >= 0; i-- {
+		created_box = append(created_box, box[i])
+		//fmt.Println(box[i])
+	}
+
+	for i := 0; i < len(created_box); i++ {
+		fmt.Println(created_box[i])
+	}
+	return created_box
 }
 
 //---------------------------------6kyu
