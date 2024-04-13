@@ -18,8 +18,8 @@ func main() {
 	//SpinWords("Hey fellow warriors")
 	//TwiceAsOld(36, 7)
 	//fmt.Println(dots_on_domino_bones(2))
-	CreateBox(7, 7)
-
+	//CreateBox(10, 10)
+	fmt.Println(Is_valid_ip("12.255.56.1"))
 	fmt.Println(split_main + "Codewars End" + split_main)
 }
 
@@ -379,4 +379,30 @@ func SpinWords(str string) string {
 		}
 	}
 	return strings.Join(all_words, " ")
+}
+
+func Is_valid_ip(ip string) bool {
+	//6kyu - IP Validation
+
+	sections := strings.Split(ip, ".")
+	if len(sections) != 4 {
+		return false
+	}
+	for i := 0; i < len(sections); i++ {
+		if string(sections[i][0]) == "0" && len(sections[i]) != 1{
+			return false
+		}
+		bit, err := strconv.Atoi(string(sections[i]))
+		if err == nil {
+			if bit < 0 || bit > 255 {
+				return false
+			}
+		} else{
+			return false
+		}
+	}
+	return true
+
+	//improvments
+	//there's a .ParseIP() function lol
 }
