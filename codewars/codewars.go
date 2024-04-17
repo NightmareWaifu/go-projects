@@ -19,7 +19,8 @@ func main() {
 	//TwiceAsOld(36, 7)
 	//fmt.Println(dots_on_domino_bones(2))
 	//CreateBox(10, 10)
-	fmt.Println(Is_valid_ip("12.255.56.1"))
+	//fmt.Println(Is_valid_ip("12.255.56.1"))
+	Rot13("EBG13 rknzcyr.")
 	fmt.Println(split_main + "Codewars End" + split_main)
 }
 
@@ -389,7 +390,7 @@ func Is_valid_ip(ip string) bool {
 		return false
 	}
 	for i := 0; i < len(sections); i++ {
-		if string(sections[i][0]) == "0" && len(sections[i]) != 1{
+		if string(sections[i][0]) == "0" && len(sections[i]) != 1 {
 			return false
 		}
 		bit, err := strconv.Atoi(string(sections[i]))
@@ -397,7 +398,7 @@ func Is_valid_ip(ip string) bool {
 			if bit < 0 || bit > 255 {
 				return false
 			}
-		} else{
+		} else {
 			return false
 		}
 	}
@@ -405,4 +406,39 @@ func Is_valid_ip(ip string) bool {
 
 	//improvments
 	//there's a .ParseIP() function lol
+}
+
+//--------------------------------5kyu
+
+func Rot13(msg string) string {
+	//5kyu - ROT13
+
+	//97-122 for lower
+	//65-90 for upper
+
+	new_string := ""
+	//fmt.Println("Word is: " + msg)
+	for index := 0; index < len(msg); index++ {
+		var rot_13_value int
+		if int(msg[index]) <= 90 && int(msg[index]) >= 65 {
+			//for lower range
+			rot_13_value = int(msg[index]) + 13
+			if rot_13_value > 90 {
+				rot_13_value = rot_13_value - 90 + 64
+			}
+			new_string += string(rune(rot_13_value))
+		} else if int(msg[index]) <= 122 && int(msg[index]) >= 97 {
+			//for upper range
+			rot_13_value = int(msg[index]) + 13
+			if rot_13_value > 122 {
+				rot_13_value = rot_13_value - 122 + 96
+			}
+			new_string += string(rune(rot_13_value))
+		} else {
+			new_string += string(msg[index])
+		}
+	}
+
+	//fmt.Println(new_string)
+	return new_string
 }
