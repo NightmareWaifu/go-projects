@@ -20,7 +20,9 @@ func main() {
 	//fmt.Println(dots_on_domino_bones(2))
 	//CreateBox(10, 10)
 	//fmt.Println(Is_valid_ip("12.255.56.1"))
-	Rot13("EBG13 rknzcyr.")
+	//Rot13("EBG13 rknzcyr.")
+
+	fmt.Println(AlphabetWar("twjbzwtdmjqwqtzbdjpzdj"))
 	fmt.Println(split_main + "Codewars End" + split_main)
 }
 
@@ -441,4 +443,113 @@ func Rot13(msg string) string {
 
 	//fmt.Println(new_string)
 	return new_string
+}
+
+func AlphabetWar(fight string) string {
+	//5kyu - Alphabet war - Wo lo loooooo priests join the war
+
+	var right_power int = 0
+	var left_power int = 0
+	var winner string = ""
+
+	//loop through then check t/j? - add power straight away
+	//loop, save the character from the previous loop iteration -> if the current changes the previous, deduct power and add accordingly
+	var tag byte = '-'
+	for letter := 0; letter < len(fight); letter++ {
+		fmt.Print("Index ")
+		fmt.Print(string(fight[letter]))
+		fmt.Println(letter)
+		if fight[letter] == 't' || fight[letter] == 'j' {
+			tag = fight[letter]
+			fmt.Println("Skipped!")
+			continue
+		}
+
+		if letter < (len(fight) - 1) {
+			if (fight[letter+1] == 't' && tag == 'j') || (fight[letter+1] == 'j' && tag == 't') {
+				right_power += AlphabetWarRight(fight[letter])
+				fmt.Print("0Right: ")
+				fmt.Println(right_power)
+				left_power += AlphabetWarLeft(fight[letter])
+				fmt.Print("0Left: ")
+				fmt.Println(left_power)
+				continue
+			} else if fight[letter+1] == 't' {
+				left_power += AlphabetWarLeft(fight[letter])
+				fmt.Print("1Left: ")
+				fmt.Println(left_power)
+				left_power += AlphabetWarRight(fight[letter])
+				fmt.Print("Left: ")
+				fmt.Println(left_power)
+				continue
+			} else if fight[letter+1] == 'j' {
+				right_power += AlphabetWarRight(fight[letter])
+				fmt.Print("1Right: ")
+				fmt.Println(right_power)
+				right_power += AlphabetWarLeft(fight[letter])
+				fmt.Print("Right: ")
+				fmt.Println(right_power)
+				continue
+			}
+		}
+		if tag == 'j' {
+			right_power += AlphabetWarRight(fight[letter])
+			fmt.Print("2Right: ")
+			fmt.Println(right_power)
+			right_power += AlphabetWarLeft(fight[letter])
+			fmt.Print("Right: ")
+			fmt.Println(right_power)
+			tag = '-'
+			continue
+		} else if tag == 't' {
+			left_power += AlphabetWarLeft(fight[letter])
+			fmt.Print("2Left: ")
+			fmt.Println(left_power)
+			left_power += AlphabetWarRight(fight[letter])
+			fmt.Print("Left: ")
+			fmt.Println(left_power)
+			tag = '-'
+			continue
+		} else {
+			right_power += AlphabetWarRight(fight[letter])
+			fmt.Print("3Right: ")
+			fmt.Println(right_power)
+			left_power += AlphabetWarLeft(fight[letter])
+			fmt.Print("3Left: ")
+			fmt.Println(left_power)
+			continue
+		}
+
+	}
+
+	if right_power > left_power {
+		winner = "Right side wins!"
+	} else if left_power > right_power {
+		winner = "Left side wins!"
+	} else {
+		winner = "Let's fight again!"
+	}
+	return winner
+}
+
+func AlphabetWarLeft(letter byte) int {
+	left := []byte{'w', 'p', 'b', 's'} //t
+	power := []int{4, 3, 2, 1}
+	for index := 0; index < len(left); index++ {
+		if left[index] == letter {
+			return power[index]
+		}
+	}
+	return 0
+}
+
+func AlphabetWarRight(letter byte) int {
+	right := []byte{'m', 'q', 'd', 'z'} //j
+	power := []int{4, 3, 2, 1}
+	for index := 0; index < len(right); index++ {
+		if right[index] == letter {
+			return power[index]
+		}
+	}
+	return 0
 }
