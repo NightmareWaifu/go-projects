@@ -4,8 +4,12 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
+// tips
+// codewars checks the return value, you can print the logs in codewars (as well as the inputs) to help debug
+// refer to DuplocateEncode() function for example
 var split_main = strings.Repeat("-", 10)
 
 func main() {
@@ -21,8 +25,9 @@ func main() {
 	//CreateBox(10, 10)
 	//fmt.Println(Is_valid_ip("12.255.56.1"))
 	//Rot13("EBG13 rknzcyr.")
-
-	fmt.Println(AlphabetWar("twjbzwtdmjqwqtzbdjpzdj"))
+	//fmt.Println(AlphabetWar("twjbzwtdmjqwqtzbdjpzdj"))
+	//fmt.Println(ValidISBN10("048665088X"))
+	//fmt.Println(DuplicateEncode("Success"))
 	fmt.Println(split_main + "Codewars End" + split_main)
 }
 
@@ -410,6 +415,42 @@ func Is_valid_ip(ip string) bool {
 	//there's a .ParseIP() function lol
 }
 
+func DuplicateEncode(word string) string {
+	encoded := ""
+	//6kyu - Duplicate Encoder
+	characters := make(map[string]int)
+	var flag bool
+	for index := range word {
+		//loop through word
+		flag = false
+		for key, value := range characters {
+			if strings.ToLower(string(word[index])) == key {
+				flag = true
+				characters[key] = value + 1
+			}
+		}
+
+		if !flag {
+			//add char to dict
+			characters[strings.ToLower(string(word[index]))] = 1
+		}
+	}
+
+	for letter := range word {
+		if characters[strings.ToLower(string(word[letter]))] > 1 {
+			encoded = encoded + ")"
+			fmt.Println("More: ", string(word[letter]))
+		} else {
+			fmt.Println("Once: ", string(word[letter]))
+			encoded = encoded + "("
+		}
+	}
+
+	fmt.Println(word)
+	fmt.Println(characters)
+	return encoded
+}
+
 //--------------------------------5kyu
 
 func Rot13(msg string) string {
@@ -552,4 +593,26 @@ func AlphabetWarRight(letter byte) int {
 		}
 	}
 	return 0
+}
+
+func ValidISBN10(isbn string) bool {
+	//5kyu - ISBN-10 Validation
+	var sum int
+	if len(isbn) != 10 {
+		return false
+	}
+	for index := 0; index < len(isbn); index++ {
+		if unicode.IsDigit(rune(isbn[index])) {
+			current_num, _ := strconv.Atoi(string(isbn[index]))
+			sum = sum + (current_num * (index + 1))
+		} else if index == (len(isbn)-1) && (isbn[index] == 'X' || isbn[index] == 'x') {
+			sum = sum + (10 * 10)
+		} else {
+			return false
+		}
+	}
+	if sum%11 == 0 {
+		return true
+	}
+	return false // implement proper solution here
 }
